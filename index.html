@@ -1,0 +1,46 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Stylesheet Link -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css"/>
+
+</head>
+<body>
+    <div id='game'>
+    </div>
+    <button type='button' onclick="gameStart()">START GAME</button>
+    <!-- <script type="text/javascript" src="/scripts/game.js"></script> -->
+    <script>
+        let gameRunning = false;
+
+        function gameStart(){
+            if(!gameRunning){
+                gameRunning = true;
+                startTime();
+            }
+        }
+
+        async function startTime(){
+            const wait1s = ms => new Promise((r, j)=>setTimeout((r), 1000))
+
+            let time = 3;
+            
+            console.log('started game');
+            console.log(`Starting in: ${time}`)
+            
+            while(time > 1){
+                await wait1s(1000);
+                time--
+                console.log(`Starting in: ${time}`)
+            }
+            console.log('GOGOGO')
+            gameRunning = false;
+        }
+    </script>
+</body>
+</html>

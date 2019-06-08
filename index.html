@@ -14,33 +14,85 @@
     <div id='game'>
     </div>
     <button type='button' onclick="gameStart()">START GAME</button>
-    <!-- <script type="text/javascript" src="/scripts/game.js"></script> -->
     <script>
         let gameRunning = false;
+        const gameContainer = document.getElementById('game');
+        const wait1s = ms => new Promise((r, j)=>setTimeout((r), 1000))
 
-        function gameStart(){
+        class Target{
+            constructor(size,difficulty){
+                this.size = size;
+                this.difficulty = difficulty;
+            }
+
+            async populate(){
+                gameContainer.innerHTML += `<div id='target'></div>`;
+                const target = document.getElementById('target');
+                var removeTarget = gameContainer
+                var startTime = new Date();
+
+                let game = {
+                    height:gameContainer.offsetHeight, 
+                    width:gameContainer.offsetWidth
+                }
+                let randomHeight = Math.floor(Math.random() * game.height - (target.scrollHeight)) + 1
+                let randomWidth = Math.floor(Math.random() * game.width  - (target.scrollWidth)) + 1
+
+                target.style.marginLeft = `${randomWidth}px`;
+                target.style.marginTop = `${randomHeight}px`;
+
+                setTimeout((res)=>{
+                    if(target){
+                        gameContainer.innerHTML = '';
+                    }
+                },2000);
+
+                target.addEventListener('click',function(e){
+                    const endTime = new Date();
+                    var timeDiff = endTime - startTime;
+                    var score = 2000 - timeDiff;
+                    console.log('TIME TOOK: ',timeDiff, ' SCORE: ', score)
+
+                    gameContainer.innerHTML = '';
+                    
+                    startTime = new Date();
+                })
+            }
+        }
+
+        async function gameStart(){
             if(!gameRunning){
+                let seconds = 0;
                 gameRunning = true;
-                startTime();
+                await startTime();
+                //let circ = new Target(50,'easy');
+
+                setInterval(()=>{
+                    seconds++
+                    console.log(seconds);
+                    if(seconds == 5){
+                        gameRunning = false;
+                        
+                    }
+                },1000)
             }
         }
 
         async function startTime(){
-            const wait1s = ms => new Promise((r, j)=>setTimeout((r), 1000))
-
             let time = 3;
-            
+
             console.log('started game');
             console.log(`Starting in: ${time}`)
-            
+
             while(time > 1){
                 await wait1s(1000);
-                time--
-                console.log(`Starting in: ${time}`)
+                time--;
+                console.log(`Starting in: ${time}`);
             }
+
             console.log('GOGOGO')
-            gameRunning = false;
         }
     </script>
+    <!-- <script type="text/javascript" src="/scripts/game.js"></script> -->
 </body>
 </html>

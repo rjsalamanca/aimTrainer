@@ -27,10 +27,8 @@
 
             async populate(){
                 gameContainer.innerHTML += `<div id='target'></div>`;
-                const target = document.getElementById('target');
-                var removeTarget = gameContainer
                 var startTime = new Date();
-
+                let targ = this;
                 let game = {
                     height:gameContainer.offsetHeight, 
                     width:gameContainer.offsetWidth
@@ -41,12 +39,17 @@
                 target.style.marginLeft = `${randomWidth}px`;
                 target.style.marginTop = `${randomHeight}px`;
 
-                setTimeout((res)=>{
+                let timer = setTimeout((res)=>{
+                    const target = document.getElementById('target');
+
                     if(target){
+                        console.log('broooo')
                         gameContainer.innerHTML = '';
+                        clearTimeout(timer);
+                        createTarget();
                     }
                 },2000);
-
+                
                 target.addEventListener('click',function(e){
                     const endTime = new Date();
                     var timeDiff = endTime - startTime;
@@ -54,27 +57,34 @@
                     console.log('TIME TOOK: ',timeDiff, ' SCORE: ', score)
 
                     gameContainer.innerHTML = '';
-                    
-                    startTime = new Date();
+                    clearTimeout(timer)
+                    createTarget();
                 })
             }
         }
 
         async function gameStart(){
             if(!gameRunning){
-                let seconds = 0;
                 gameRunning = true;
                 await startTime();
-                //let circ = new Target(50,'easy');
+                //setInterval(()=>{
+                createTarget();
+                //},1000)
+            }
+        }
 
-                setInterval(()=>{
-                    seconds++
-                    console.log(seconds);
-                    if(seconds == 5){
-                        gameRunning = false;
-                        
-                    }
-                },1000)
+        function createTarget(){
+            let circ = null;
+            circ = new Target(50,'easy');
+            circ.populate();
+
+            let seconds = 0;
+            seconds++
+
+            if(seconds == 5){
+                gameRunning = false;
+                console.log(seconds);
+                gameContainer.remove();
             }
         }
 

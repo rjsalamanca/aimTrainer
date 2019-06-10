@@ -67,9 +67,22 @@
             if(!gameRunning){
                 gameRunning = true;
                 await startTime();
-                //setInterval(()=>{
-                createTarget();
-                //},1000)
+                let seconds = 0;
+                let minute = setInterval(()=>{
+                    seconds++
+                    if(seconds == 5){
+                        gameRunning = false;
+                        clearInterval(minute);
+
+                        console.log('DONE PLAYING: ',seconds);
+                        gameContainer.remove();
+                    } else {
+                        console.log(seconds)
+                    }
+                },1000)
+
+
+            createTarget();
             }
         }
 
@@ -77,15 +90,6 @@
             let circ = null;
             circ = new Target(50,'easy');
             circ.populate();
-
-            let seconds = 0;
-            seconds++
-
-            if(seconds == 5){
-                gameRunning = false;
-                console.log(seconds);
-                gameContainer.remove();
-            }
         }
 
         async function startTime(){
